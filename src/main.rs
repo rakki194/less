@@ -22,8 +22,6 @@ use std::env::args;
 use std::fs::File;
 use std::io::{self, BufReader, Read, IsTerminal};
 use std::thread;
-use tempfile::NamedTempFile;
-use std::io::Write;
 
 // Make the read_input function public for testing
 pub fn read_input<R: Read>(mut reader: R, pager: minus::Pager) -> Result<()> {
@@ -88,7 +86,8 @@ fn main() -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::Cursor;
+    use std::io::{Cursor, Write};
+    use tempfile::NamedTempFile;
 
     // Test helper to create a temp file with content
     fn create_temp_file(content: &str) -> NamedTempFile {
