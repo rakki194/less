@@ -2,6 +2,12 @@
 name = "less"
 version = "0.1.0"
 edition = "2024"
+description = "A simple pager utility for displaying file contents or piped input, with dynamic scrolling and search functionality"
+license = "MIT"
+authors = ["Balazs Horvath"]
+repository = "https://github.com/rakki194/less"
+keywords = ["pager", "terminal", "cli", "text", "viewer"]
+categories = ["command-line-utilities", "text-processing"]
 
 [dependencies]
 minus = { version = "5.6.1", features = ["dynamic_output", "search"] }
