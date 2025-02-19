@@ -1,4 +1,4 @@
-# Cortex
+# less
 
 A modern, feature-rich terminal pager written in Rust, designed to be a more user-friendly alternative to traditional pagers like `less` or `more`.
 
@@ -21,31 +21,35 @@ A modern, feature-rich terminal pager written in Rust, designed to be a more use
 ### Building from Source
 
 1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/cortex.git
-cd cortex
-```
+
+    ```bash
+    git clone https://github.com/rakki194/less.git
+    cd less
+    ```
 
 2. Build the project:
-```bash
-cargo build --release
-```
 
-The compiled binary will be available at `target/release/cortex`.
+    ```bash
+    cargo build --release
+    ```
+
+The compiled binary will be available at `target/release/less`.
 
 ## Usage
 
-Cortex can be used in two ways:
+less can be used in two ways:
 
 1. View a file:
-```bash
-cortex <filename>
-```
+
+    ```bash
+    less <filename>
+    ```
 
 2. Read from piped input:
-```bash
-command | cortex
-```
+
+    ```bash
+    command | less
+    ```
 
 ### Key Bindings
 
@@ -61,7 +65,8 @@ command | cortex
 
 ## Technical Details
 
-Cortex is built with modern Rust practices and provides:
+less is built with modern Rust practices and provides:
+
 - Error handling with context using `anyhow`
 - Thread-safe dynamic paging
 - Efficient buffered reading of input
@@ -78,4 +83,4 @@ This project is open source and available under the [MIT License](LICENSE).
 ## Acknowledgments
 
 - Thanks to the creators of the `minus` crate for providing the core paging functionality
-- Inspired by traditional Unix pagers while aiming to provide a more modern experience 
+- Inspired by traditional Unix pagers while aiming to provide a more modern experience
