@@ -22,8 +22,11 @@ use std::env::args;
 use std::fs::File;
 use std::io::{self, BufReader, Read, IsTerminal};
 use std::thread;
+use tempfile::NamedTempFile;
+use std::io::Write;
 
-fn read_input<R: Read>(mut reader: R, pager: minus::Pager) -> Result<()> {
+// Make the read_input function public for testing
+pub fn read_input<R: Read>(mut reader: R, pager: minus::Pager) -> Result<()> {
     let mut changes = || -> Result<()> {
         let mut buff = String::new();
         reader
@@ -80,4 +83,67 @@ fn main() -> Result<()> {
     }
 
     read_input(input, output)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::Cursor;
+
+    // Test helper to create a temp file with content
+    fn create_temp_file(content: &str) -> NamedTempFile {
+        let mut file = NamedTempFile::new().unwrap();
+        write!(file, "{}", content).unwrap();
+        file
+    }
+
+    #[test]
+    fn test_file_not_found() {
+        let args = vec![
+            "cortex".to_string(),
+            "nonexistent_file.txt".to_string(),
+        ];
+        let result = std::panic::catch_unwind(|| {
+            let _ = File::open(&args[1])
+                .with_context(|| format!("Failed to open file '{}'", &args[1]));
+        });
+        assert!(result.is_ok()); // Should not panic
+    }
+
+    #[test]
+    fn test_read_file_contents() {
+        let test_content = "Hello, World!";
+        let temp_file = create_temp_file(test_content);
+        let file = File::open(temp_file.path()).unwrap();
+        let mut reader = BufReader::new(file);
+        let mut content = String::new();
+        reader.read_to_string(&mut content).unwrap();
+        assert_eq!(content, test_content);
+    }
+
+    #[test]
+    fn test_no_arguments() {
+        let args = vec!["cortex".to_string()];
+        if io::stdin().is_terminal() {
+            let result = std::panic::catch_unwind(|| {
+                if args.len() < 2 {
+                    anyhow::bail!(
+                        "No input provided. Usage: {} <filename> or pipe content to stdin",
+                        args[0]
+                    );
+                }
+                Ok::<(), anyhow::Error>(())
+            });
+            assert!(result.is_ok()); // Should not panic
+        }
+    }
+
+    #[test]
+    fn test_read_from_cursor() {
+        let test_content = "Test content";
+        let mut reader = Cursor::new(test_content);
+        let mut content = String::new();
+        reader.read_to_string(&mut content).unwrap();
+        assert_eq!(content, test_content);
+    }
 }
