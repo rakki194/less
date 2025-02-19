@@ -4,8 +4,5 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-minus = { git = "https://github.com/AMythicDev/minus", features = [
-  "dynamic_output",
-  "search",
-] }
+minus = { version = "5.6.1", features = ["dynamic_output", "search"] }
 anyhow = { version = "1.0.95", features = ["backtrace"] }
