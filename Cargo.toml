@@ -6,8 +6,10 @@ description = "A simple pager utility for displaying file contents or piped inpu
 license = "MIT"
 authors = ["Balazs Horvath"]
 repository = "https://github.com/rakki194/less"
+homepage = "https://github.com/rakki194/less"
+documentation = "https://docs.rs/less"
 keywords = ["pager", "terminal", "cli", "text", "viewer"]
-categories = ["command-line-utilities", "text-processing"]
+categories = ["command-line-utilities", "text-processing", "development-tools"]
 
 [dependencies]
 minus = { version = "5.6.1", features = ["dynamic_output", "search"] }
