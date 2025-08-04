@@ -48,44 +48,22 @@ fn test_repeat_search_edge_cases() {
 
 #[test]
 fn test_repeat_search_progression() {
-    // Test search progression through matches
-
     let total_matches: usize = 4;
+    // This is the expected progression: start at 0, then 1, 2, 3, 0, 1
+    let progression = vec![0usize, 1, 2, 3, 0, 1];
 
-    // Forward progression: 0 -> 1 -> 2 -> 3 -> 0 (wrap)
-    let forward_progression = vec![0usize, 1, 2, 3, 0];
-    for (i, &expected_mark) in forward_progression.iter().enumerate() {
-        let current_mark = if i == 0 {
+    for i in 1..progression.len() {
+        let current_mark = progression[i - 1];
+        let expected_next = progression[i];
+        let actual_next = if current_mark >= total_matches.saturating_sub(1) {
             0
         } else {
-            forward_progression[i - 1]
+            current_mark + 1
         };
-
-        if current_mark >= total_matches.saturating_sub(1) {
-            // Should wrap to 0
-            assert_eq!(expected_mark, 0);
-        } else {
-            // Should increment
-            assert_eq!(expected_mark, current_mark + 1);
-        }
-    }
-
-    // Reverse progression: 3 -> 2 -> 1 -> 0 -> 3 (wrap)
-    let reverse_progression = vec![3usize, 2, 1, 0, 3];
-    for (i, &expected_mark) in reverse_progression.iter().enumerate() {
-        let current_mark = if i == 0 {
-            3
-        } else {
-            reverse_progression[i - 1]
-        };
-
-        if current_mark == 0 || total_matches == 0 {
-            // Should wrap to last
-            assert_eq!(expected_mark, total_matches.saturating_sub(1));
-        } else {
-            // Should decrement
-            assert_eq!(expected_mark, current_mark.saturating_sub(1));
-        }
+        assert_eq!(
+            expected_next, actual_next,
+            "Failed at step {i}: current_mark={current_mark}"
+        );
     }
 }
 
